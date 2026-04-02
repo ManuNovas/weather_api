@@ -1,10 +1,9 @@
+from http.client import HTTPException
 from json import dumps
 
 from aws_lambda_powertools import Logger
-from aws_lambda_powertools.utilities.validation import validator
 
 from src.application.ports.input import WeatherInputPort
-from src.adapters.input.schemas import LOCATION_SCHEMA
 
 
 class WeatherInputAdapter:
@@ -22,10 +21,11 @@ class WeatherInputAdapter:
                 "statusCode": 200,
                 "body": dumps(timeline),
             }
-        except Exception as e:
+        except HTTPException as e:
             self.logger.error(e)
+            code, message = e.args
             response = {
-                "statusCode": 500,
-                "body": dumps({"error": "Internal Server Error"}),
+                "statusCode": code if code else 500,
+                "body": message if message else "Internal Server Error",
             }
         return response

@@ -1,5 +1,5 @@
-from application.ports.input import WeatherInputPort
-from application.ports.output import WeatherOutputPort
+from src.application.ports.input import WeatherInputPort
+from src.application.ports.output import WeatherOutputPort
 
 
 class WeatherUseCases(WeatherInputPort):

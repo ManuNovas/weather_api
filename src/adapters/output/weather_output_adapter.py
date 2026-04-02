@@ -1,3 +1,5 @@
+from http.client import HTTPException
+
 from dotenv import load_dotenv
 from functools import lru_cache
 from os import getenv
@@ -15,5 +17,5 @@ class WeatherOutputAdapter(WeatherOutputPort):
         url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}?key={key}"
         response = get(url)
         if response.status_code != 200:
-            raise Exception(code=response.status_code, message=response.text)
+            raise HTTPException(response.status_code, response.text)
         return response.json()

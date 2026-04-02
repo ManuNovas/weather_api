@@ -1,0 +1,33 @@
+org: maneveil
+service: weather-api
+
+provider:
+  name: aws
+  runtime: python3.13
+  stage: dev
+
+functions:
+  getLocation:
+    handler: main.handler
+    memorySize: 512
+    events:
+      - httpApi:
+          method: GET
+          path: /locations/{location}
+
+custom:
+  pythonRequirements:
+    slim: true
+    strip: true
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - s3transfer
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
